@@ -2,7 +2,7 @@
 Module contains Flask application and routes 
 """
 from flask import Flask, jsonify
-from storage import Storage
+from seventweets.storage import Storage
 
 app = Flask(__name__)
 
