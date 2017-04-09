@@ -15,4 +15,4 @@ def get_tweets():
 @app.route("/tweets/<int:tweet_id>", methods=['GET'])
 def get_tweet(tweet_id):
     tweet = Storage.get_tweet(tweet_id)
-    return jsonify(tweet) if tweet else "Not found", 404
+    return jsonify(tweet) if tweet else ("Not found", 404)
