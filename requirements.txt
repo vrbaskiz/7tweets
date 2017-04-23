@@ -2,3 +2,4 @@ Flask
 gunicorn
 pytest
 requests
+pg8000
