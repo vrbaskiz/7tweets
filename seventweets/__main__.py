@@ -31,6 +31,12 @@ def main(argv):
         description=__doc__)
     subparsers = parser.add_subparsers(dest="command")
     run_parser = subparsers.add_parser('runserver')
+    run_parser.add_argument('-p', '--port', dest='port', default='5000',
+                            type=int,
+                            metavar='PORT', help='Port to listen on.')
+    run_parser.add_argument('-i', '--interface', dest='interface',
+                            default='127.0.0.1', metavar='HOST',
+                            help='Interface to listen on.')
     migrate_parser = subparsers.add_parser('migrate')
 
     migrate_parser.add_argument('-d', '--direction', dest='direction',
@@ -42,7 +48,7 @@ def main(argv):
     if args.command == 'migrate':
         migrate(args.direction)
     elif args.command == 'runserver':
-        app.run()
+        app.run(host=args.interface, port=args.port)
 
 
 if __name__ == '__main__':
