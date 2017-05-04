@@ -1,4 +1,12 @@
 import os
+import binascii
+
+
+def generate_api_token():
+    """
+    Generates random token.
+    """
+    return binascii.b2a_hex(os.urandom(15))
 
 
 class Config(object):
@@ -11,3 +19,5 @@ class Config(object):
                      password=os.environ.get('ST_DB_PASS', None),
                      port=int(os.environ.get('ST_DB_PORT', 5432)))
     NAME = os.environ.get('ST_NAME', 'break')
+    # TODO: If token is not provided, no one knows it - log it somewhere
+    API_TOKEN = os.environ.get('ST_API_TOKEN', generate_api_token())

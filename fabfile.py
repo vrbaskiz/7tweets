@@ -53,7 +53,7 @@ def migrate(db_pass, image=image_tag):
         f'python3 -m seventweets migrate')
 
 
-def start_service(db_pass, image=image_tag):
+def start_service(db_pass, api_token, image=image_tag):
     run(f'docker run -d '
         f'--name {service_container_name} '
         f'--net {network_name} '
@@ -62,6 +62,7 @@ def start_service(db_pass, image=image_tag):
         f'-e ST_DB_HOST={db_container_name} '
         f'-e ST_DB_NAME={db_name} '
         f'-e ST_DB_PORT={db_port} '
+        f'-e ST_API_TOKEN={api_token} '
         f'-p 0.0.0.0:{external_port}:{gunicorn_port} '
         f'{image}')
 
@@ -84,7 +85,7 @@ def app_logs():
     run(f'docker logs {service_container_name}')
 
 
-def deploy(db_pass, image=image_tag):
+def deploy(db_pass, api_token, image=image_tag):
     build_image(image)
     push_image(image)
     pull_image(image)
@@ -93,4 +94,4 @@ def deploy(db_pass, image=image_tag):
     create_volume()
     start_db(db_pass)
     migrate(db_pass)
-    start_service(db_pass, image)
+    start_service(db_pass, api_token, image)

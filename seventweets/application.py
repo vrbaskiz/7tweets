@@ -4,6 +4,7 @@ Module contains Flask application and routes
 from flask import Flask, jsonify
 from seventweets.storage import Storage
 from seventweets.tweet import Tweet
+from seventweets.auth import auth
 from flask import request
 
 app = Flask(__name__)
@@ -28,6 +29,7 @@ def add_tweet():
 
 
 @app.route("/tweets/<int:tweet_id>", methods=['DELETE'])
+@auth
 def delete_tweet(tweet_id):
     Storage.delete_tweet(tweet_id)
     return '', 204
