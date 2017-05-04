@@ -13,8 +13,10 @@ def uses_db(f):
     @functools.wraps(f)
     def wrapper(cls, *args, **kwargs):
         cursor = cls._conn.cursor()
-        return f(cls, cursor, *args, **kwargs)
-
+        res = f(cls, cursor, *args, **kwargs)
+        cursor.close()
+        cls._conn.commit()
+        return res
     return wrapper
 
 
