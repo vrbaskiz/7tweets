@@ -208,7 +208,6 @@ class MigrationManager:
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print('in migration.__exit__')
         self.db.close()
 
     def __del__(self):
