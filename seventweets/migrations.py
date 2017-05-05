@@ -14,7 +14,7 @@ class Migration(metaclass=abc.ABCMeta):
     def id(self):
         """
         All migrations have to have unique ID. This methods returns it.
-        
+
         IDs have to be integers and IDs have to be incremented in comparison
         to previous migrations since this ID is used to determine which
         migrations are applied and which are not.
@@ -33,7 +33,7 @@ class Migration(metaclass=abc.ABCMeta):
     def downgrade(self, cursor):
         """
         Performs operations on database to downgrade current schema.
-        :param cursor: Database cursor. 
+        :param cursor: Database cursor.
         """
         pass
 
@@ -42,6 +42,7 @@ class InitialMigration(Migration):
     """
     Migration that creates initial tables for seventweets.
     """
+
     def id(self):
         return 1
 
@@ -62,11 +63,11 @@ class InitialMigration(Migration):
 class MigrationManager:
     """
     This class manages migrations and performs upgrade and downgrade actions.
-    
-    Migration is defined as class that inherits `Migration` base class and 
-    implements its abstracts methods. All migrations must have implemented 
+
+    Migration is defined as class that inherits `Migration` base class and
+    implements its abstracts methods. All migrations must have implemented
     `id()` method that returns integer higher that previous migrations.
-    
+
     If direction for migrations is 'upgrade', all will be performed
     If direction for migrations is 'downgrade' only one will be performed. This
     is done for safety and since generally downgrade migrations are not very
@@ -77,7 +78,7 @@ class MigrationManager:
 
     def __init__(self, version_table='_migrations'):
         """
-        :param version_table: Name of table to hold current migration status. 
+        :param version_table: Name of table to hold current migration status.
         """
         self.version_table = version_table
         self.db = pg8000.connect(**Config.DB_CONFIG)
@@ -88,7 +89,7 @@ class MigrationManager:
     def collect_migrations():
         """
         Collects and returns all migrations that could be found.
-        
+
         Migrations will be found if they inherit `Migrations` class. Also, note
         that module where migrations are defined needs to be executed in order
         for `__subclasses__` method to work.
@@ -99,10 +100,10 @@ class MigrationManager:
     def migrate(self, direction):
         """
         Executes migrations.
-        
+
         In case of 'upgrade' migrations, all unapplied will be applied.
         In case of 'downgrade' migration, only one will be applied.
-        :param direction: 
+        :param direction:
             Either `MigrationManager.UP` or `MigrationManager.DOWN`.
         """
         if direction not in [self.UP, self.DOWN]:
@@ -147,7 +148,7 @@ class MigrationManager:
             if current_index == 0:
                 self.set_version(0)
             else:
-                prev_migration = self.migrations[current_index-1]
+                prev_migration = self.migrations[current_index - 1]
                 self.set_version(prev_migration.id())
         finally:
             cursor.close()
@@ -196,11 +197,11 @@ class MigrationManager:
         if count == 0:
             cur.execute(f'''
                 INSERT INTO {self.version_table} (version) VALUES (%s);
-            ''', (version, ))
+            ''', (version,))
         else:
             cur.execute(f'''
                 UPDATE {self.version_table} SET version=%s;
-            ''', (version, ))
+            ''', (version,))
         self.db.commit()
         cur.close()
 

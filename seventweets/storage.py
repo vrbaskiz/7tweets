@@ -66,7 +66,7 @@ class Storage(object):
     def delete_tweet(cls, cursor, tweet_id):
         cursor.execute(
             """
-            DELETE FROM tweets 
+            DELETE FROM tweets
             WHERE id=%s
             """,
             (tweet_id,)

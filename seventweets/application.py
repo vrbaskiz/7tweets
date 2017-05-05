@@ -1,5 +1,5 @@
 """
-Module contains Flask application and routes 
+Module contains Flask application and routes.
 """
 from flask import Flask, jsonify
 from seventweets.storage import Storage
